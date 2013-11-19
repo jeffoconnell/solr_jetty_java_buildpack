@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# bin/compile <build-dir> <cache-dir>
+
+# fail fast
+set -e
+
+logger -p user.notice -t "slugc[$$]" "jetty_jdk_pack java_compile_start"
+
+BIN_DIR=$(cd $(dirname $0); pwd) # absolute path
+# parse args
+BUILD_DIR=$1
+CACHE_DIR=$2
+LOGGER_FLAGS=""
+
+sudo apt-get -y -qq clean
+sudo apt-get -y -qq update
+sudo apt-get -y -qq upgrade
+sudo apt-get install -y python-software-properties software-properties-common
+sudo apt-get install -y curl build-essential git-core
+#Custom repo for Java 1.7
+sudo apt-add-repository -y ppa:webupd8team/java
+sudo apt-get -y -qq update
+#Auto accept installer prompts
+sudo echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
+sudo echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
+sudo echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
+##install
+sudo apt-get install -y oracle-java7-installer
+
+PROFILE_PATH="$BUILD_DIR/.profile.d/java.sh"
+sudo mkdir -p $(dirname $PROFILE_PATH)
+echo 'export JAVA_HOME="/usr/lib/jvm/java-7-oracle"' >> $PROFILE_PATH
+
+logger -p user.notice -t "slugc[$$]" "jetty_jdk_pack java_compile_end $LOGGER_FLAGS"
+logger -p user.notice -t "slugc[$$]" "jetty_jdk_pack jetty_install_start"
+
+sudo apt-get install -y jetty
+
+logger -p user.notice -t "slugc[$$]" "jetty_jdk_pack jetty_install_end $LOGGER_FLAGS"
