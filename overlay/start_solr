@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
+cd /jetty-home
 java -Xmx8096m \
   -Dsolr.solr.home=/solr-home \
   -Djava.util.logging.config.file=/jetty-home/etc/solr-logging.properties \
-  -jar /jetty-home/start.jar jetty.port=$PORT
+  -jar start.jar jetty.port=$PORT
 
