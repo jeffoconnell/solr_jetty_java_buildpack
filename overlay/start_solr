@@ -3,5 +3,6 @@ cd /jetty-home
 java -Xmx8096m \
   -Dsolr.solr.home=/solr-home \
   -Djava.util.logging.config.file=/jetty-home/etc/solr-logging.properties \
-  -jar start.jar jetty.port=$PORT
+  -Djetty.port=$PORT \
+  -jar start.jar
 
