@@ -6,5 +6,5 @@ BUILD_DIR=$1
 cat << EOF
 ---
 default_process_types:
-  web: cd /opt/jetty && java -jar start.jar
+  web: /start_solr
 EOF

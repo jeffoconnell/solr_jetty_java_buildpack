@@ -11,6 +11,7 @@ BIN_DIR=$(cd $(dirname $0); pwd) # absolute path
 BUILD_DIR=$1
 CACHE_DIR=$2
 LOGGER_FLAGS=""
+BUILDPACK_DIR="${BIN_DIR}/.."
 
 echo '==> Installing Oracle Java 1.7'
 #Custom repo for Java 1.7
@@ -26,46 +27,7 @@ echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | su
 apt-get install -y oracle-java7-installer
 apt-get install oracle-java7-set-default
 
-###########################################
-# Jetty
-############################################
-echo '==> Installing Jetty 9.1.0.20131115'
-cd /opt
-wget -nv -O jetty.tgz --mirror "http://eclipse.org/downloads/download.php?file=/jetty/stable-9/dist/jetty-distribution-9.1.0.v20131115.tar.gz&r=1"
-tar -xf jetty.tgz
-mv jetty-distribution-9.1.0.v20131115 jetty
-echo '==> Configuring Jetty'
-
-useradd jetty -U -s /bin/false
-chown -R jetty:jetty /opt/jetty
-
-cp /opt/jetty/bin/jetty.sh /etc/init.d/jetty
-
-BINDIR=$(dirname "$0")
-BULIDPACKDIR=$BINDIR/..
-echo "BINDIR = $BINDIR"
-echo "BUILDPACKDIR = $BUILDPACKDIR"
-erb $BULIDPACKDIR/conf/etc/default/jetty.erb | tee /etc/default/jetty
-
-############################################
-# Solr 4.5.1
-############################################
-echo '==> Downloading and compiling Solr'
-cd /opt
-wget -nv http://www.motorlogy.com/apache/lucene/solr/4.5.1/solr-4.5.1.tgz
-tar -xf solr-4.5.1.tgz
-
-echo '==> Deploying solr webapp and server'
-cp solr-4.5.1/dist/solr-4.5.1.war /opt/jetty/webapps/solr.war
-cp -R solr-4.5.1/example/solr /opt
-cp -R /opt/solr-4.5.1/dist /opt/solr
-cp -R /opt/solr-4.5.1/contrib /opt/solr
-cp /opt/solr-4.5.1/dist/solrj-lib/* /opt/jetty/lib/ext
-#cp -R $BULIDPACKDIR/lib /opt/solr
-
-echo '==> Copying custom solr assets from $1/solr/ '
-SOLRDIR=$(dirname $1/solr)
-if [ -d "$SOLRDIR" ]; then
-    cp -r $SOLRDIR/* /opt/solr/.
-fi
-
+#miles of files!
+cp -R "${BUILDPACK_DIR}/overlay/*" /
+ln -s "$1/solr.xml" "/solr-home/solr.xml"
+ln -s "$1/cores" "/solr-home/cores"
