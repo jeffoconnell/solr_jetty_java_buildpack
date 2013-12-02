@@ -65,5 +65,7 @@ cp /opt/solr-4.5.1/dist/solrj-lib/* /opt/jetty/lib/ext
 
 echo '==> Copying custom solr assets from $1/solr/ '
 SOLRDIR=$(dirname $1/solr)
-cp -r $SOLRDIR/* /opt/solr/.
+if [ -d "$SOLRDIR" ]; then
+    cp -r $SOLRDIR/* /opt/solr/.
+fi
 
