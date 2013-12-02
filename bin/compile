@@ -28,6 +28,7 @@ apt-get install -y oracle-java7-installer
 apt-get install oracle-java7-set-default
 
 #miles of files!
+ls -lah "${BUILDPACK_DIR}"
 cp -R "${BUILDPACK_DIR}/overlay/*" /
 ln -s "$1/solr.xml" "/solr-home/solr.xml"
 ln -s "$1/cores" "/solr-home/cores"
