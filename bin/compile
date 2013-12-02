@@ -11,7 +11,7 @@ BIN_DIR=$(cd $(dirname $0); pwd) # absolute path
 BUILD_DIR=$1
 CACHE_DIR=$2
 LOGGER_FLAGS=""
-BUILDPACK_DIR="${BIN_DIR}/.."
+BUILDPACK_DIR="$(dirname ${BIN_DIR})"
 
 echo '==> Installing Oracle Java 1.7'
 #Custom repo for Java 1.7
