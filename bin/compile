@@ -42,15 +42,15 @@ tar -xvf jetty.tgz
 mv jetty-distribution-9.1.0.v20131115 jetty
 echo '==> Configuring Jetty'
 
-#sudo useradd jetty -U -s /bin/false
-#sudo chown -R jetty:jetty /opt/jetty
+sudo useradd jetty -U -s /bin/false
+sudo chown -R jetty:jetty /opt/jetty
 
 sudo cp /opt/jetty/bin/jetty.sh /etc/init.d/jetty
 
 BINDIR=$(dirname "$0")
-if [[ ! -f $1/jetty.erb ]]; then
-  cp $BINDIR/conf/jetty.erb $1/jetty.erb
-fi
+BULIDPACKDIR=$BINDIR/..
+
+erb $BULIDPACKDIR/conf/etc/default/jetty.erb > /etc/default/jetty
 
 logger -p user.notice -t "slugc[$$]" "jetty_jdk_pack jetty_install_end $LOGGER_FLAGS"
 logger -p user.notice -t "slugc[$$]" "solr_jetty_jdk_pack solr_install_start"
@@ -68,7 +68,7 @@ sudo cp -R solr-4.5.1/example/solr /opt
 sudo cp -R /opt/solr-4.5.1/dist /opt/solr
 sudo cp -R /opt/solr-4.5.1/contrib /opt/solr
 sudo cp /opt/solr-4.5.1/dist/solrj-lib/* /opt/jetty/lib/ext
-sudo cp -R $1/lib /opt/solr
+sudo cp -R $BULIDPACKDIR/lib /opt/solr
 
 
 logger -p user.notice -t "slugc[$$]" "solr_jetty_jdk_pack solr_install_end $LOGGER_FLAGS"
