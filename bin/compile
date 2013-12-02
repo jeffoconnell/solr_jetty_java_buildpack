@@ -69,13 +69,7 @@ sudo cp -R solr-4.5.1/example/solr /opt
 sudo cp -R /opt/solr-4.5.1/dist /opt/solr
 sudo cp -R /opt/solr-4.5.1/contrib /opt/solr
 sudo cp /opt/solr-4.5.1/dist/solrj-lib/* /opt/jetty/lib/ext
+sudo cp -R $1/../lib /opt/solr
 
-#custom config and custom app jar files
-cp $APP_ROOT_DIR/solr/solr.xml /opt/solr/.
-sudo cp -R $APP_ROOT_DIR/solr/lib /opt/solr
-
-#the solr cores
-sudo cp -R $APP_ROOT_DIR/solr/cores /opt/solr
-sudo chown -R jetty:jetty /opt/solr/cores
 
 logger -p user.notice -t "slugc[$$]" "solr_jetty_jdk_pack solr_install_end $LOGGER_FLAGS"
