@@ -17,7 +17,7 @@ BUILDPACK_DIR="$(dirname ${BIN_DIR})"
 echo '==> Layout out Solr'
 #miles of files!
 ls -lah "${BUILDPACK_DIR}"
-cp -R "${BUILDPACK_DIR}/overlay/*" /
+cp -R ${BUILDPACK_DIR}/overlay/* /
 ln -s "$1/solr.xml" "/solr-home/solr.xml"
 ln -s "$1/cores" "/solr-home/cores"
 
