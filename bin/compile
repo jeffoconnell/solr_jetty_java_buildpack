@@ -4,7 +4,7 @@
 # fail fast
 set -e
 
-logger -p user.notice -t "slugc[$$]" "jetty_jdk_pack java_compile_start"
+logger -p user.notice -t "slugc[$$]" "language_pack_java java_compile_start"
 
 BIN_DIR=$(cd $(dirname $0); pwd) # absolute path
 # parse args
@@ -16,24 +16,66 @@ sudo apt-get -y -qq clean
 sudo apt-get -y -qq update
 sudo apt-get -y -qq upgrade
 sudo apt-get install -y python-software-properties software-properties-common
-sudo apt-get install -y curl build-essential git-core
+sudo apt-get install -y curl chkconfig build-essential git-core
 #Custom repo for Java 1.7
 sudo apt-add-repository -y ppa:webupd8team/java
 sudo apt-get -y -qq update
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EEA14886
 #Auto accept installer prompts
 sudo echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
 sudo echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
 sudo echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
 ##install
 sudo apt-get install -y oracle-java7-installer
+sudo apt-get install oracle-java7-set-default
 
-PROFILE_PATH="$BUILD_DIR/.profile.d/java.sh"
-sudo mkdir -p $(dirname $PROFILE_PATH)
-echo 'export JAVA_HOME="/usr/lib/jvm/java-7-oracle"' >> $PROFILE_PATH
-
-logger -p user.notice -t "slugc[$$]" "jetty_jdk_pack java_compile_end $LOGGER_FLAGS"
+logger -p user.notice -t "slugc[$$]" "language_pack_java java_compile_end $LOGGER_FLAGS"
 logger -p user.notice -t "slugc[$$]" "jetty_jdk_pack jetty_install_start"
 
-sudo apt-get install -y jetty
+###########################################
+# Jetty
+############################################
+echo '==> Installing Jetty 9.1.0.20131115'
+cd /opt
+wget -O jetty.tgz --mirror "http://eclipse.org/downloads/download.php?file=/jetty/stable-9/dist/jetty-distribution-9.1.0.v20131115.tar.gz&r=1"
+tar -xvf jetty.tgz
+mv jetty-distribution-9.1.0.v20131115 jetty
+echo '==> Configuring Jetty'
+
+sudo useradd jetty -U -s /bin/false
+sudo chown -R jetty:jetty /opt/jetty
+
+sudo cp /opt/jetty/bin/jetty.sh /etc/init.d/jetty
+echo '==> You need to configure /etc/default/jetty.  Example settings'
+echo '          JAVA=/usr/bin/java # Path to Java '
+echo '          NO_START=0 # Start on boot  '
+echo '          JETTY_HOST=0.0.0.0 # Listen to all hosts'
+echo '          JETTY_ARGS=jetty.port=8085'
+echo '          JETTY_USER=jetty # Run as this user'
 
 logger -p user.notice -t "slugc[$$]" "jetty_jdk_pack jetty_install_end $LOGGER_FLAGS"
+logger -p user.notice -t "slugc[$$]" "solr_jetty_jdk_pack solr_install_start"
+############################################
+# Solr 4.5.1
+############################################
+echo '==> Downloading and compiling Solr'
+cd /opt
+wget http://www.motorlogy.com/apache/lucene/solr/4.5.1/solr-4.5.1.tgz
+tar zxvf solr-4.5.1.tgz
+
+echo '==> Deploying solr webapp and server'
+sudo cp solr-4.5.1/dist/solr-4.5.1.war /opt/jetty/webapps/solr.war
+sudo cp -R solr-4.5.1/example/solr /opt
+sudo cp -R /opt/solr-4.5.1/dist /opt/solr
+sudo cp -R /opt/solr-4.5.1/contrib /opt/solr
+sudo cp /opt/solr-4.5.1/dist/solrj-lib/* /opt/jetty/lib/ext
+
+#custom config and custom app jar files
+cp $APP_ROOT_DIR/solr/solr.xml /opt/solr/.
+sudo cp -R $APP_ROOT_DIR/solr/lib /opt/solr
+
+#the solr cores
+sudo cp -R $APP_ROOT_DIR/solr/cores /opt/solr
+sudo chown -R jetty:jetty /opt/solr/cores
+
+logger -p user.notice -t "slugc[$$]" "solr_jetty_jdk_pack solr_install_end $LOGGER_FLAGS"
