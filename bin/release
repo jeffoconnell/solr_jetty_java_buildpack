@@ -3,8 +3,8 @@
 
 BUILD_DIR=$1
 
-cat <<EOF
+cat << EOF
 ---
-config_vars:
-  PATH: /usr/local/bin
+default_process_types:
+  web: erb $1/jetty.erb > /etc/default/jetty && cd /opt/jetty && java -jar start.jar
 EOF

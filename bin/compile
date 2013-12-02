@@ -42,16 +42,15 @@ tar -xvf jetty.tgz
 mv jetty-distribution-9.1.0.v20131115 jetty
 echo '==> Configuring Jetty'
 
-sudo useradd jetty -U -s /bin/false
-sudo chown -R jetty:jetty /opt/jetty
+#sudo useradd jetty -U -s /bin/false
+#sudo chown -R jetty:jetty /opt/jetty
 
 sudo cp /opt/jetty/bin/jetty.sh /etc/init.d/jetty
-echo '==> You need to configure /etc/default/jetty.  Example settings'
-echo '          JAVA=/usr/bin/java # Path to Java '
-echo '          NO_START=0 # Start on boot  '
-echo '          JETTY_HOST=0.0.0.0 # Listen to all hosts'
-echo '          JETTY_ARGS=jetty.port=8085'
-echo '          JETTY_USER=jetty # Run as this user'
+
+BINDIR=$(dirname "$0")
+if [[ ! -f $1/jetty.erb ]]; then
+  cp $BINDIR/conf/jetty.erb $1/jetty.erb
+fi
 
 logger -p user.notice -t "slugc[$$]" "jetty_jdk_pack jetty_install_end $LOGGER_FLAGS"
 logger -p user.notice -t "slugc[$$]" "solr_jetty_jdk_pack solr_install_start"
