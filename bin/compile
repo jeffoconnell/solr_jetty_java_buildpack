@@ -18,8 +18,8 @@ echo '==> Layout out Solr'
 #miles of files!
 ls -lah "${BUILDPACK_DIR}"
 cp -R ${BUILDPACK_DIR}/overlay/* /
-ln -s "$1/solr.xml" "/solr-home/solr.xml"
-ln -s "$1/cores" "/solr-home/cores"
+[ -f "$1/solr.xml" ] && cp "$1/solr.xml" "/solr-home/solr.xml"
+[ -d "$1/cores" ] && ln -s "$1/cores" "/solr-home/cores"
 
 echo '==> Installing Oracle Java 1.7'
 #Custom repo for Java 1.7
