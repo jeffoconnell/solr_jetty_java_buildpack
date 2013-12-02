@@ -13,6 +13,14 @@ CACHE_DIR=$2
 LOGGER_FLAGS=""
 BUILDPACK_DIR="$(dirname ${BIN_DIR})"
 
+
+echo '==> Layout out Solr'
+#miles of files!
+ls -lah "${BUILDPACK_DIR}"
+cp -R "${BUILDPACK_DIR}/overlay/*" /
+ln -s "$1/solr.xml" "/solr-home/solr.xml"
+ln -s "$1/cores" "/solr-home/cores"
+
 echo '==> Installing Oracle Java 1.7'
 #Custom repo for Java 1.7
 sudo apt-get install -y python-software-properties software-properties-common
@@ -27,8 +35,3 @@ echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | su
 apt-get install -y oracle-java7-installer
 apt-get install oracle-java7-set-default
 
-#miles of files!
-ls -lah "${BUILDPACK_DIR}"
-cp -R "${BUILDPACK_DIR}/overlay/*" /
-ln -s "$1/solr.xml" "/solr-home/solr.xml"
-ln -s "$1/cores" "/solr-home/cores"
