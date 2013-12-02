@@ -14,6 +14,7 @@ LOGGER_FLAGS=""
 
 echo '==> Installing Oracle Java 1.7'
 #Custom repo for Java 1.7
+sudo apt-get install -y python-software-properties software-properties-common
 add-apt-repository -y ppa:webupd8team/java
 apt-get -y -qq update
 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EEA14886
@@ -62,4 +63,7 @@ cp /opt/solr-4.5.1/dist/solrj-lib/* /opt/jetty/lib/ext
 cp -R $BULIDPACKDIR/lib /opt/solr
 
 echo '==> Copying custom solr assets from $1/solr/ '
-#SOLRDIR=$(dirname $1/solr)
+SOLRDIR=$(dirname $1/solr)
+
+
+
