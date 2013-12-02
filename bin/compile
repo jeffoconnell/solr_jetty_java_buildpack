@@ -14,16 +14,16 @@ LOGGER_FLAGS=""
 
 echo '==> Installing Oracle Java 1.7'
 #Custom repo for Java 1.7
-sudo apt-add-repository -y ppa:webupd8team/java
-sudo apt-get -y -qq update
+add-apt-repository -y ppa:webupd8team/java
+apt-get -y -qq update
 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EEA14886
 #Auto accept installer prompts
-sudo echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
-sudo echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
-sudo echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
+echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
+echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
+echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
 ##install
-sudo apt-get install -y oracle-java7-installer
-sudo apt-get install oracle-java7-set-default
+apt-get install -y oracle-java7-installer
+apt-get install oracle-java7-set-default
 
 ###########################################
 # Jetty
@@ -35,10 +35,10 @@ tar -xvf jetty.tgz
 mv jetty-distribution-9.1.0.v20131115 jetty
 echo '==> Configuring Jetty'
 
-sudo useradd jetty -U -s /bin/false
-sudo chown -R jetty:jetty /opt/jetty
+useradd jetty -U -s /bin/false
+chown -R jetty:jetty /opt/jetty
 
-sudo cp /opt/jetty/bin/jetty.sh /etc/init.d/jetty
+cp /opt/jetty/bin/jetty.sh /etc/init.d/jetty
 
 BINDIR=$(dirname "$0")
 BULIDPACKDIR=$BINDIR/..
@@ -54,10 +54,12 @@ wget http://www.motorlogy.com/apache/lucene/solr/4.5.1/solr-4.5.1.tgz
 tar zxvf solr-4.5.1.tgz
 
 echo '==> Deploying solr webapp and server'
-sudo cp solr-4.5.1/dist/solr-4.5.1.war /opt/jetty/webapps/solr.war
-sudo cp -R solr-4.5.1/example/solr /opt
-sudo cp -R /opt/solr-4.5.1/dist /opt/solr
-sudo cp -R /opt/solr-4.5.1/contrib /opt/solr
-sudo cp /opt/solr-4.5.1/dist/solrj-lib/* /opt/jetty/lib/ext
-sudo cp -R $BULIDPACKDIR/lib /opt/solr
+cp solr-4.5.1/dist/solr-4.5.1.war /opt/jetty/webapps/solr.war
+cp -R solr-4.5.1/example/solr /opt
+cp -R /opt/solr-4.5.1/dist /opt/solr
+cp -R /opt/solr-4.5.1/contrib /opt/solr
+cp /opt/solr-4.5.1/dist/solrj-lib/* /opt/jetty/lib/ext
+cp -R $BULIDPACKDIR/lib /opt/solr
 
+echo '==> Copying custom solr assets from $1/solr/ '
+#SOLRDIR=$(dirname $1/solr)
