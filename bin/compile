@@ -22,7 +22,7 @@ cp -R ${BUILDPACK_DIR}/overlay/* /
 
 echo '==> Installing Oracle Java 1.7'
 #Custom repo for Java 1.7
-sudo apt-get install -y python-software-properties software-properties-common
+sudo apt-get install -y software-properties-common
 add-apt-repository -y ppa:webupd8team/java
 apt-get -y -qq update
 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EEA14886
