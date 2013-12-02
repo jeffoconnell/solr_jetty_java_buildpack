@@ -31,8 +31,8 @@ apt-get install oracle-java7-set-default
 ############################################
 echo '==> Installing Jetty 9.1.0.20131115'
 cd /opt
-wget -O jetty.tgz --mirror "http://eclipse.org/downloads/download.php?file=/jetty/stable-9/dist/jetty-distribution-9.1.0.v20131115.tar.gz&r=1"
-tar -xvf jetty.tgz
+wget -O jetty.tgz --mirror "http://eclipse.org/downloads/download.php?file=/jetty/stable-9/dist/jetty-distribution-9.1.0.v20131115.tar.gz&r=1" --nv
+tar -xf jetty.tgz
 mv jetty-distribution-9.1.0.v20131115 jetty
 echo '==> Configuring Jetty'
 
@@ -43,8 +43,9 @@ cp /opt/jetty/bin/jetty.sh /etc/init.d/jetty
 
 BINDIR=$(dirname "$0")
 BULIDPACKDIR=$BINDIR/..
-
-erb $BULIDPACKDIR/conf/etc/default/jetty.erb > /etc/default/jetty
+echo "BINDIR = $BINDIR"
+echo "BUILDPACKDIR = $BUILDPACKDIR"
+erb $BULIDPACKDIR/conf/etc/default/jetty.erb | tee /etc/default/jetty
 
 ############################################
 # Solr 4.5.1
@@ -52,7 +53,7 @@ erb $BULIDPACKDIR/conf/etc/default/jetty.erb > /etc/default/jetty
 echo '==> Downloading and compiling Solr'
 cd /opt
 wget http://www.motorlogy.com/apache/lucene/solr/4.5.1/solr-4.5.1.tgz
-tar zxvf solr-4.5.1.tgz
+tar -xf solr-4.5.1.tgz
 
 echo '==> Deploying solr webapp and server'
 cp solr-4.5.1/dist/solr-4.5.1.war /opt/jetty/webapps/solr.war
@@ -60,10 +61,9 @@ cp -R solr-4.5.1/example/solr /opt
 cp -R /opt/solr-4.5.1/dist /opt/solr
 cp -R /opt/solr-4.5.1/contrib /opt/solr
 cp /opt/solr-4.5.1/dist/solrj-lib/* /opt/jetty/lib/ext
-cp -R $BULIDPACKDIR/lib /opt/solr
+#cp -R $BULIDPACKDIR/lib /opt/solr
 
 echo '==> Copying custom solr assets from $1/solr/ '
 SOLRDIR=$(dirname $1/solr)
-
-
+cp -r $SOLRDIR/* /opt/solr/.
 
