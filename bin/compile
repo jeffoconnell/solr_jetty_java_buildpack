@@ -31,7 +31,7 @@ apt-get install oracle-java7-set-default
 ############################################
 echo '==> Installing Jetty 9.1.0.20131115'
 cd /opt
-wget -O jetty.tgz --mirror "http://eclipse.org/downloads/download.php?file=/jetty/stable-9/dist/jetty-distribution-9.1.0.v20131115.tar.gz&r=1" --nv
+wget -nv -O jetty.tgz --mirror "http://eclipse.org/downloads/download.php?file=/jetty/stable-9/dist/jetty-distribution-9.1.0.v20131115.tar.gz&r=1"
 tar -xf jetty.tgz
 mv jetty-distribution-9.1.0.v20131115 jetty
 echo '==> Configuring Jetty'
@@ -52,7 +52,7 @@ erb $BULIDPACKDIR/conf/etc/default/jetty.erb | tee /etc/default/jetty
 ############################################
 echo '==> Downloading and compiling Solr'
 cd /opt
-wget http://www.motorlogy.com/apache/lucene/solr/4.5.1/solr-4.5.1.tgz
+wget -nv http://www.motorlogy.com/apache/lucene/solr/4.5.1/solr-4.5.1.tgz
 tar -xf solr-4.5.1.tgz
 
 echo '==> Deploying solr webapp and server'
