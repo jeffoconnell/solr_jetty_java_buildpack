@@ -12,11 +12,7 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 LOGGER_FLAGS=""
 
-sudo apt-get -y -qq clean
-sudo apt-get -y -qq update
-sudo apt-get -y -qq upgrade
-sudo apt-get install -y python-software-properties software-properties-common
-sudo apt-get install -y curl chkconfig build-essential git-core
+echo '==> Installing Oracle Java 1.7'
 #Custom repo for Java 1.7
 sudo apt-add-repository -y ppa:webupd8team/java
 sudo apt-get -y -qq update
@@ -28,9 +24,6 @@ sudo echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true
 ##install
 sudo apt-get install -y oracle-java7-installer
 sudo apt-get install oracle-java7-set-default
-
-logger -p user.notice -t "slugc[$$]" "language_pack_java java_compile_end $LOGGER_FLAGS"
-logger -p user.notice -t "slugc[$$]" "jetty_jdk_pack jetty_install_start"
 
 ###########################################
 # Jetty
@@ -52,8 +45,6 @@ BULIDPACKDIR=$BINDIR/..
 
 erb $BULIDPACKDIR/conf/etc/default/jetty.erb > /etc/default/jetty
 
-logger -p user.notice -t "slugc[$$]" "jetty_jdk_pack jetty_install_end $LOGGER_FLAGS"
-logger -p user.notice -t "slugc[$$]" "solr_jetty_jdk_pack solr_install_start"
 ############################################
 # Solr 4.5.1
 ############################################
@@ -70,5 +61,3 @@ sudo cp -R /opt/solr-4.5.1/contrib /opt/solr
 sudo cp /opt/solr-4.5.1/dist/solrj-lib/* /opt/jetty/lib/ext
 sudo cp -R $BULIDPACKDIR/lib /opt/solr
 
-
-logger -p user.notice -t "slugc[$$]" "solr_jetty_jdk_pack solr_install_end $LOGGER_FLAGS"
