@@ -14,19 +14,18 @@ LOGGER_FLAGS=""
 BUILDPACK_DIR="$(dirname ${BIN_DIR})"
 CORES="/solr-home/cores"
 
-echo '==> Layout Solr'
-#miles of files!
-cp -R ${BUILDPACK_DIR}/overlay/* /
-[ -f "$1/solr.xml" ] && cp "$1/solr.xml" "/solr-home/solr.xml"
-[ -d "$1/cores" ] && ln -s "$1/cores" "${CORES}"
-
 echo '==> Render dynamic config files'
-for template in $(find "${CORES}/" | grep '.erb$')
+for template in $(find "$1/" | grep '.erb$')
 do
   target=$(basename -s .erb "${template}")
   erb "${template}" > "${target}"
 done
 
+echo '==> Layout Solr'
+#miles of files!
+cp -R ${BUILDPACK_DIR}/overlay/* /
+mkdir -p /solr-home
+cp -R $1/* /solr-home/
 
 echo '==> Installing Oracle Java 1.7'
 #Custom repo for Java 1.7
