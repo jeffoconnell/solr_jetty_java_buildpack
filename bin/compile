@@ -15,9 +15,10 @@ BUILDPACK_DIR="$(dirname ${BIN_DIR})"
 CORES="/solr-home/cores"
 
 echo '==> Render dynamic config files'
-for template in $(find "$1/" | grep '.erb$')
+for template in $(find $1/ | grep '.erb$')
 do
   target=$(basename -s .erb "${template}")
+  echo "$template -> $target"
   erb "${template}" > "${target}"
 done
 
