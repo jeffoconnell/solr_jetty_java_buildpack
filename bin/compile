@@ -14,18 +14,19 @@ LOGGER_FLAGS=""
 BUILDPACK_DIR="$(dirname ${BIN_DIR})"
 CORES="/solr-home/cores"
 
-echo '==> Layout out Solr'
+echo '==> Layout Solr'
 #miles of files!
 cp -R ${BUILDPACK_DIR}/overlay/* /
 [ -f "$1/solr.xml" ] && cp "$1/solr.xml" "/solr-home/solr.xml"
 [ -d "$1/cores" ] && ln -s "$1/cores" "${CORES}"
 
-echo '==> Get environment variables available to Solr'
-for core in $(ls "${CORES}")
+echo '==> Render dynamic config files'
+for template in $(find "${CORES}/" | grep '.erb$')
 do
-  [ -d "${CORES}/${core}/conf" ] || mkdir -p "${CORES}/${core}/conf"
-  env > "${CORES}/${core}/conf/solrcore.properties"
+  target=$(basename -s .erb "${template}")
+  erb "${template}" > "${target}"
 done
+
 
 echo '==> Installing Oracle Java 1.7'
 #Custom repo for Java 1.7
