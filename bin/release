@@ -6,5 +6,5 @@ BUILD_DIR=$1
 cat << EOF
 ---
 default_process_types:
-  web: /start_solr
+  web: ${HOME}/start_solr
 EOF

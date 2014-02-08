@@ -24,9 +24,9 @@ done
 
 echo '==> Layout Solr'
 #miles of files!
-cp -R ${BUILDPACK_DIR}/overlay/* /
-mkdir -p /solr-home
-cp -R $1/* /solr-home/
+cp -R ${BUILDPACK_DIR}/overlay/* ${HOME}/
+mkdir -p ${HOME}/solr-home
+cp -R $1/* ${HOME}/solr-home/
 
 if which java; then
   :
@@ -34,15 +34,15 @@ else
   echo '==> Installing Oracle Java 1.7'
   #Custom repo for Java 1.7
   sudo apt-get install -y software-properties-common
-  add-apt-repository -y ppa:webupd8team/java
-  apt-get -y -qq update
-  apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EEA14886
+  sudo add-apt-repository -y ppa:webupd8team/java
+  sudo apt-get -y -qq update
+  sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EEA14886
   #Auto accept installer prompts
   echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
   echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
   echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
   ##install
-  apt-get install -y oracle-java7-installer
-  apt-get install oracle-java7-set-default
+  sudo apt-get install -y oracle-java7-installer
+  sudo apt-get install oracle-java7-set-default
 fi
 
