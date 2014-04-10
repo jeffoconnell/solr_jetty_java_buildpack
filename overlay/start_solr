@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd ${DIR}/jetty-home
-exec java -Xmx4096m \
+exec java -Xmx8192m \
   -Dsolr.solr.home=${DIR}/solr-home \
   -Djava.util.logging.config.file=${DIR}/jetty-home/etc/solr-logging.properties \
   -Djetty.port=$PORT \
