@@ -26,7 +26,7 @@ echo '==> Layout Solr'
 #miles of files!
 cp -R ${BUILDPACK_DIR}/overlay/* ${HOME}/
 mkdir -p ${HOME}/solr-home
-cp -R $1/* ${HOME}/solr-home/
+cp -R ${BUILD_DIR}/* ${HOME}/solr-home/
 
 if which java; then
   :
@@ -45,4 +45,3 @@ else
   sudo apt-get install -y oracle-java7-installer
   sudo apt-get install oracle-java7-set-default
 fi
-
