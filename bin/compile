@@ -29,17 +29,6 @@ if which apt-get; then
   sudo apt-get install --yes --force-yes mongodb-org freetds-dev freetds-bin libmysqlclient-dev gawk parallel
   sudo [ -d /var/data/pimongo ] || mkdir -p /var/data/pimongo
   sudo chmod 0777 /var/data/pimongo
-fi
-
-echo '==> Layout Solr'
-#miles of files!
-cp -R ${BUILDPACK_DIR}/overlay/* ${HOME}/
-mkdir -p ${HOME}/solr-home
-cp -R ${BUILD_DIR}/* ${HOME}/solr-home/
-
-if which java; then
-  :
-else
   echo '==> Installing Oracle Java 1.8'
   sudo apt-get install -y software-properties-common
   sudo add-apt-repository --yes ppa:webupd8team/java
@@ -50,6 +39,12 @@ else
   sudo apt-get install --yes oracle-java8-installer
   sudo apt-get install --yes oracle-java8-set-default
 fi
+
+echo '==> Layout Solr'
+#miles of files!
+cp -R ${BUILDPACK_DIR}/overlay/* ${HOME}/
+mkdir -p ${HOME}/solr-home
+cp -R ${BUILD_DIR}/* ${HOME}/solr-home/
 
 echo '==> System Overlay'
 #this if statement makes a lot more sense when you learn that I occasionally
