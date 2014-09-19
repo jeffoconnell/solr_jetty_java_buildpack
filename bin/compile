@@ -56,6 +56,6 @@ echo '==> System Overlay'
 #this if statement makes a lot more sense when you learn that I occasionally
 #run this buildpack on my Mac...
 if which apt-get; then
-  cp -R ${BUILD_DIR}/overlay/* /
+  sudo cp -R ${BUILD_DIR}/overlay/* /
   sudo service mongod start
 fi
