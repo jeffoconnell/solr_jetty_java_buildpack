@@ -1,11 +1,12 @@
-#Oracle Java 1.7, Jetty, and SOLR Buildpack
-Work in progress, proceed at your own peril
+#Oracle Java 1.8, Jetty, and SOLR Buildpack
 
 #Basics
 This buildpack will install:
-* Oracle JDK 1.7
-* Jetty web server 9.1.0.20131115
-* SOLR 4.5.1
+* Oracle JDK 1.8
+* Jetty web server 8.1.12
+* SOLR 4.4.0
 
 #SOLR Config
-The installation will look for a /solr directory at $1, and copy those files and directories into /opt/solr as part of the installation.
+This installation will copy all files in the root of the service repository
+on top of the solr to `solr-home`. Typically, you will have a solr.xml and you
+`./cores` right off the root of your service repository.
