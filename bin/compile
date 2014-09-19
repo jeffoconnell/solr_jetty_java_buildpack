@@ -22,6 +22,16 @@ do
   erb "${template}" > "${target}"
 done
 
+if which apt-get; then
+  echo '==> Mongo Me'
+  echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | sudo tee /etc/apt/sources.list.d/mongodb.list
+  sudo apt-get update
+  sudo apt-get install --yes mongodb-org freetds-dev freetds-bin libmysqlclient-dev gawk parallel
+  sudo service mongod stop
+  sudo [ -d /var/data/pimongo ] || mkdir -p /var/data/pimongo
+  sudo chmod 0777 /var/data/pimongo
+fi
+
 echo '==> Layout Solr'
 #miles of files!
 cp -R ${BUILDPACK_DIR}/overlay/* ${HOME}/
@@ -34,10 +44,18 @@ else
   echo '==> Installing Oracle Java 1.8'
   sudo apt-get install -y software-properties-common
   sudo add-apt-repository --yes ppa:webupd8team/java
-  sudo apt-get --yes update
+  sudo apt-get update
   #Auto accept installer prompts
   echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
   ##install
   sudo apt-get install --yes oracle-java8-installer
   sudo apt-get install --yes oracle-java8-set-default
+fi
+
+echo '==> System Overlay'
+#this if statement makes a lot more sense when you learn that I occasionally
+#run this buildpack on my Mac...
+if which apt-get; then
+  cp -R ${BUILD_DIR}/overlay/* /
+  sudo service mongod start
 fi
