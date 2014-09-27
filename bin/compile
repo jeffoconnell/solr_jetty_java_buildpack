@@ -51,8 +51,6 @@ echo '==> System Overlay'
 #run this buildpack on my Mac...
 if which apt-get; then
   if [ -d ${BUILD_DIR}/overlay ]; then
-    sudo service mongod stop
     sudo cp -R ${BUILD_DIR}/overlay/* /
-    sudo service mongod start
   fi
 fi
