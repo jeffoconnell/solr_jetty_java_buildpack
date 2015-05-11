@@ -40,6 +40,7 @@ fi
 
 echo '==> Layout Solr'
 #miles of files!
+[ -d ${HOME} ] || mkdir -p ${HOME}
 cp -R ${BUILDPACK_DIR}/overlay/* ${HOME}/
 mkdir -p ${HOME}/solr-home
 cp -R ${BUILD_DIR}/* ${HOME}/solr-home/
