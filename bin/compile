@@ -27,8 +27,6 @@ if which apt-get; then
   echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | sudo tee /etc/apt/sources.list.d/mongodb.list
   sudo apt-get update
   sudo apt-get install --yes --force-yes mongodb-org freetds-dev freetds-bin libmysqlclient-dev gawk parallel
-  sudo [ -d /var/data/pimongo ] || mkdir -p /var/data/pimongo
-  sudo chmod 0777 /var/data/pimongo
   echo '==> Installing Oracle Java 1.8'
   sudo apt-get install -y software-properties-common
   sudo add-apt-repository --yes ppa:webupd8team/java
