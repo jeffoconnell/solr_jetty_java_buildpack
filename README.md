@@ -5,7 +5,6 @@ This buildpack will install:
 * Oracle JDK 1.8
 * Jetty web server 8.1.12
 * SOLR 4.4.0
-* MongoDB 2.6.0
 
 #SOLR Config
 This installation will copy all files in the root of the service repository
