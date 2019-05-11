@@ -24,7 +24,6 @@ done
 
 if which apt-get; then
 
-  @echo "Installing Oracle JDK 8"
   sudo apt-get update -y
   sudo apt-get install --yes --force-yes freetds-dev freetds-bin libmysqlclient-dev gawk parallel
   sudo apt-get install -y software-properties-common wget lsof
