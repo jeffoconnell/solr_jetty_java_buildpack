@@ -23,17 +23,21 @@ do
 done
 
 if which apt-get; then
-  sudo apt-get update
+
+  @echo "Installing Oracle JDK 8"
+  sudo apt-get update -y
   sudo apt-get install --yes --force-yes freetds-dev freetds-bin libmysqlclient-dev gawk parallel
-  echo '==> Installing Oracle Java 1.8'
-  sudo apt-get install -y software-properties-common
-  sudo add-apt-repository --yes ppa:webupd8team/java
-  sudo apt-get update
-  #Auto accept installer prompts
-  echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
-  ##install
-  sudo apt-get install --yes oracle-java8-installer
-  sudo apt-get install --yes oracle-java8-set-default
+  sudo apt-get install -y software-properties-common wget lsof
+  echo '==> Installing Java 1.8'
+  sudo  apt-get install -y openjdk-8-jdk
+  #sudo add-apt-repository --yes ppa:webupd8team/java
+  #echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | \
+  #sudo /usr/bin/debconf-set-selections
+  sudo apt-get update --fix-missing
+  #sudo apt-get install -y oracle-java8-installer oracle-java8-set-default
+  sudo apt-get upgrade -y
+  sudo apt-get autoremove -y
+
 fi
 
 echo '==> Layout Solr'
