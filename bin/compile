@@ -27,8 +27,10 @@ if which apt-get; then
   sudo apt-get update -y
   sudo apt-get install --yes --force-yes freetds-dev freetds-bin libmysqlclient-dev gawk parallel
   sudo apt-get install -y software-properties-common wget lsof
-  echo '==> Installing Java 1.8'
-  sudo  apt-get install -y openjdk-8-jdk
+
+  sudo apt-get install openjdk-7-jre
+  sudo apt-get install openjdk-7-jdk
+
   #sudo add-apt-repository --yes ppa:webupd8team/java
   #echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | \
   #sudo /usr/bin/debconf-set-selections
