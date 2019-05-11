@@ -28,8 +28,7 @@ if which apt-get; then
   sudo apt-get install --yes --force-yes freetds-dev freetds-bin libmysqlclient-dev gawk parallel
   sudo apt-get install -y software-properties-common wget lsof
 
-  sudo apt-get install openjdk-7-jre
-  sudo apt-get install openjdk-7-jdk
+  sudo apt-get install -y openjdk-7-jre openjdk-7-jdk
 
   #sudo add-apt-repository --yes ppa:webupd8team/java
   #echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | \
